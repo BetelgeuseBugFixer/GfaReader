@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"Alle Klassen und Schnittstellen","u":"allclasses-index.html"},{"p":"utils","l":"ByteReference"},{"p":"reader","l":"GfaReader"},{"p":"reader","l":"SimplePath"},{"p":"reader","l":"SimplePathSaver"},{"p":"reader","l":"SimpleSegmentSaver"}];updateSearchResults();
