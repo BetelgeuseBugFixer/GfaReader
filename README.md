@@ -8,7 +8,6 @@ These can be found [here](https://s3-us-west-2.amazonaws.com/human-pangenomics/i
 ---
 ## GFA and Pangenomes
 
-Got it! Here's a revised version without the mention of a common genome:
 
 GFA and Pangenomes
 A GFA (Graphical Fragment Assembly) file is a graph-based format for representing genomic data. It stores genomic segments (nodes) and their relationships (edges), allowing for the representation of different genomic variations.
