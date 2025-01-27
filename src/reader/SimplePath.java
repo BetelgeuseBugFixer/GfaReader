@@ -111,5 +111,15 @@ public class SimplePath {
 		return this.segmentNamesWithOrientation[index];
 	}
 
+	/**
+	 * Retrieves the segment name (without orientation) at a specific position in the path.
+	 *
+	 * @param index the index in the path
+	 * @return the segment name with orientation at the specified index
+	 */
+	public String getSegmentWithoutOrientationAt(int index) {
+		return getSegmentName(this.segmentNamesWithOrientation[index]);
+	}
+
 
 }

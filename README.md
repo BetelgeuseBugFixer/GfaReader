@@ -12,21 +12,28 @@ These can be found [here](https://s3-us-west-2.amazonaws.com/human-pangenomics/i
 GFA and Pangenomes
 A GFA (Graphical Fragment Assembly) file is a graph-based format for representing genomic data. It stores genomic segments (nodes) and their relationships (edges), allowing for the representation of different genomic variations.
 
+### mini-GFA
+
+A mini-GFA is a cut-out version of a GFA, that contains only one gene.
+
 ---
 
 In a pangenome, the GFA file aligns multiple individual genomes against reference paths. These reference paths serve as a baseline, while the individual genomes are represented as alternative paths, capturing genetic variations across different individuals.
 ## Features
 
-- Parses **segments** (`S` lines) and **paths** (`P` lines) from a GFA file.
-- Provides methods to:
-    - Retrieve the sequence of a specific segment.
-    - Get the length of a segment.
-    - Access all paths in the file using an iterator.
-- Efficiently handles file reading using byte-level indexing for optimal performance.
-
+- Read GFA file:
+  - Provides methods to:
+      - Retrieve the sequence of a specific segment
+      - Get the length of a segment
+      - Access all paths in the file using an iterator
+  - Efficiently handles file reading using byte-level indexing for optimal performance
+- Rewrite GTF files for mini-GFA
+  - This method adopts a Genome-Wide GTF file for a specific mini-GFA
+- BioUtils methods
+  - Get the reverse complement of a DNA String
 ---
 
-## Usage
+## GfaReader Usage
 
 ### 1. **Instantiating the GfaReader**
 
@@ -84,4 +91,32 @@ System.out.println("Sequence: " + segmentSeq);
 int segmentLength = gfaReader.getSegmentLength("segmentName");
 System.out.println("Length: " + segmentLength);
 
+```
+
+---
+
+## Other Methods Usage
+
+### 1. rewriteGtfForMiniGfa
+
+- This method generates a new GTF file based on a mini GFA (pangenome cut out for a single gene). It retrieves the gene sequence, compares it with the GFA sequence to determine the offset, and writes the updated GTF file.
+- Parameters:
+  - `geneId` (String): The gene ID (e.g., "ENSG00000214216"). 
+  - `gfaRefPath` (String): The reference path for the GFA (e.g., "grch38#0#3"). 
+  - `pathToMiniGfa` (String): The file path to the mini GFA. 
+  - `pathToGtf` (String): The file path to the original GTF file. 
+  - `pathToGenome` (String): The file path to the genome FASTA file. 
+  - `pathToGenomeIndex` (String): The file path to the genome index file (.fai). 
+  - `outputFilePath` (String, optional): The output file path for the new GTF. If not specified, the output file will be saved in the same directory as the input GTF with the name `<GTF file name>_<gene id>_mini.gtf`.
+
+```java
+rewriteGtfForMiniGfa(geneId, gfaRefPath, miniGfaPath, pathToGtf, pathToGenome, pathToGenomeIndex, out);
+```
+
+### 2. reverseComplement
+- Generates the reverse complement of a DNA sequence by reversing the input and replacing each base with its complement
+- Parameters:
+  - `seq` (String): The DNA sequence to process
+```java
+String reverseComp = BioUtils.reverseComplement("ATGC"); // Output: "GCAT"
 ```

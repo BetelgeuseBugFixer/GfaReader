@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static utils.BioUtils.reverseComplement;
+
 /**
  * GfaReader is a utility class for reading and parsing GFA (Graphical Fragment Assembly) files.
  * It processes segment and path data from the file and provides methods to access this information.
@@ -65,6 +67,31 @@ public class GfaReader implements Iterable<SimplePath> {
 	}
 
 	/**
+	 * Retrieves the sequence of a specified segment.
+	 *
+	 * @param pathName the name of the path
+	 * @return the sequence of the path
+	 * @throws IOException if an error occurs while accessing the segment data
+	 */
+	public String getPathSeq(String pathName) throws IOException {
+		SimplePath path = this.pathSaver.getPath(pathName);
+		StringBuilder sb = new StringBuilder();
+
+		for (int segmentIndex = 0; segmentIndex < path.getLength(); segmentIndex++) {
+			// get the current segment id
+			String segmentId = path.getSegmentWithoutOrientationAt(segmentIndex);
+
+			// get the sequence, build reverse compliment if necessary
+			String segmentSeq = this.segmentSaver.getSegmentSeq(segmentId);
+			if (path.checkIfSegmentAtIsReverse(segmentIndex)) {
+				segmentSeq = reverseComplement(segmentSeq);
+			}
+			sb.append(segmentSeq);
+		}
+		return sb.toString();
+	}
+
+	/**
 	 * Retrieves the length of a specified segment.
 	 *
 	 * @param segmentName the name of the segment
@@ -98,9 +125,9 @@ public class GfaReader implements Iterable<SimplePath> {
 	 * It fetches paths sequentially from the path data managed by SimplePathSaver.
 	 */
 	private class PathIterator implements Iterator<SimplePath> {
-		private int index; // Current index in the list of path names
 		private final ArrayList<String> pathNames; // List of path names
 		private final int size; // Total number of paths
+		private int index; // Current index in the list of path names
 
 		/**
 		 * Constructs a PathIterator and initializes its state.
@@ -120,6 +147,7 @@ public class GfaReader implements Iterable<SimplePath> {
 		public boolean hasNext() {
 			return index + 1 < this.size;
 		}
+
 		/**
 		 * Retrieves the next path in the iteration.
 		 *
