@@ -155,7 +155,7 @@ public class RewriteGtfs {
 					int end = Integer.parseInt(fields[4]);
 
 					if (fields[6].equals("-")) {
-						return extractor.getSequence(fields[0], start, end);  // Reverse strand
+						return BioUtils.reverseComplement(extractor.getSequence(fields[0], start, end));  // Reverse strand
 					}
 					return extractor.getSequence(fields[0], start, end);  // Forward strand
 				}
